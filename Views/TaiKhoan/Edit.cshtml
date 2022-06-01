@@ -1,0 +1,118 @@
+﻿@model QuanLyTruongMauGiao.Models.TAIKHOAN
+@using QuanLyTruongMauGiao.Models
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+@using (Html.BeginForm("Edit", "TaiKhoan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Sửa thông tin tài khoản</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Tài khoản</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <input type="text" id="TenTK" name="TenTK" value="@Model.TenTK" readonly />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.TenTK, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Mật khẩu</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @*@Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control", Type = "password" } })*@
+                                    <input type="password" id="MatKhau" name="MatKhau" value="@Model.MatKhau" readonly />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Phân quyền</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <select class="form-control dropdown" id="PhanQuyen" name="PhanQuyen">
+                                        @switch (Model.PhanQuyen)
+                                        {
+                                            case "Giáo viên":
+                                                <option value="Quản lý">Quản lý</option>
+                                                <option value="Giáo viên" selected>Giáo viên</option>
+                                                <option value="Phụ huynh">Phụ huynh</option>
+                                                break;
+                                            case "Phụ huynh":
+                                                <option value="Quản lý">Quản lý</option>
+                                                <option value="Giáo viên">Giáo viên</option>
+                                                <option value="Phụ huynh" selected>Phụ huynh</option>
+                                                break;
+                                            default:
+                                                <option value="Quản lý" selected>Quản lý</option>
+                                                <option value="Giáo viên">Giáo viên</option>
+                                                <option value="Phụ huynh">Phụ huynh</option>
+                                                break;
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.PhanQuyen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <input id="TrangThaiHD" name="TrangThaiHD" type="checkbox" value="@Model.TrangThaiHD" hidden/>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Ảnh đại diện</label>
+                                <div class="col-md-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <input class="form-control" id="AnhDaiDien" name="AnhDaiDien" type="text" value="@Model.AnhDaiDien" hidden="hidden" />
+                                    <input type="file" id="InputImage" name="InputImage" onchange="loadFile(event)" />
+                                    <br />
+                                    <br />
+                                    <img id="output" alt="anh" width="135" height="135" src="~/Image/Profile/@Model.AnhDaiDien" />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 text-danger" style="flex: 0 0 80%; max-width: 80%;">
+                                    @ViewBag.msg
+                                </div>
+                            </div>
+                            <div class="form-group row" style="padding-left: 50px; flex: 0 0 80%; max-width: 80%;">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Lưu</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

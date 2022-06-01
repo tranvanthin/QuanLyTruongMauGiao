@@ -1,0 +1,109 @@
+﻿@model QuanLyTruongMauGiao.Models.LOP
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Sửa thông tin lớp</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Mã lớp</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="MaLop" name="MaLop" value="@Model.MaLop" readonly />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaLop, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Tên lớp</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.TenLop, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.TenLop, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Sĩ số</label>
+                                <div class="col-sm-10">
+                                    <input type="number" id="SiSo" name="SiSo" value="@Model.SiSo" readonly />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.SiSo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Độ tuổi</label>
+                                <div class="col-sm-10">
+                                    <input type="number" id="DoTuoi" name="DoTuoi" min="1" value="@Model.DoTuoi" />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.DoTuoi, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Khối</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="Khoi" name="Khoi">
+                                        @switch (Model.Khoi)
+                                        {
+                                            case "Lá":
+                                                <option value="Mầm">Mầm</option>
+                                                <option selected value="Lá">Lá</option>
+                                                <option value="Chồi">Chồi</option>
+                                                break;
+                                            case "Chồi":
+                                                <option value="Mầm">Mầm</option>
+                                                <option value="Lá">Lá</option>
+                                                <option value="Chồi" selected>Chồi</option>
+                                                break;
+                                            default:
+                                                <option value="Mầm" selected>Mầm</option>
+                                                <option value="Lá">Lá</option>
+                                                <option value="Chồi">Chồi</option>
+                                                break;
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.Khoi, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Lưu</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

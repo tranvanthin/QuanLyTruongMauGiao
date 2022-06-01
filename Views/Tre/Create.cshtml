@@ -1,0 +1,161 @@
+﻿@model QuanLyTruongMauGiao.Models.TRE
+@using QuanLyTruongMauGiao.Models;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    QLMauGiao db = new QLMauGiao();
+    var ph = from item in db.PHUHUYNHs select item;
+    var temp = "/Image/image_default.png";
+
+}
+<style>
+    #MaTre {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+@using (Html.BeginForm("Create","Tre",FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Thêm trẻ</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Mã trẻ</label>
+                                <div class="col-sm-10">
+                                    <input id="MaTre" name="MaTre" type="text" value="@ViewBag.MaTre" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Tên trẻ</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.TenTre, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.TenTre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ngày sinh</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { Type = "date", @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Giới tính</label>
+                                <div class="col-sm-10" style="padding-top: 5px">
+                                    <label>@Html.RadioButtonFor(model => model.GioiTinh, true, new { @checked = "checked" }) Nam</label>
+                                    <label>@Html.RadioButtonFor(model => model.GioiTinh, false) Nữ</label>
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Quê quán</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.QueQuan, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.QueQuan, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Dân tộc</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.DanToc, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.DanToc, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ngày nhập học</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.NgayNhapHoc, new { htmlAttributes = new { Type = "date", @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.NgayNhapHoc, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Lớp</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownList("MaLop", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaLop, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Phụ huynh</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.MaPH, new { htmlAttributes = new { @list = "ide", @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaPH, "", new { @class = "text-danger" })
+                                    Không có trong danh sách?<a href="~/phuhuynh/create"> Thêm mới</a>
+                                </div>
+                            </div>
+                            <datalist id="ide">
+                                @foreach (PHUHUYNH item in ph)
+                                {
+                                    <option value="@item.MaPH"> @item.TenPH @item.DienThoai @item.NamSinh.ToString("dd-MM-yyyy")</option>
+                                }
+                            </datalist>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ảnh</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" id="anh" name="anh" type="text" value="image_default.png" hidden="hidden" />
+                                    <input type="file" id="InputImage" name="InputImage" onchange="loadFile(event)" />
+                                    <br />
+                                    <br />
+                                    <img id="output" alt="anh" width="135" height="135" src="@temp" />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 text-danger">
+                                    @ViewBag.msg
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Thêm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

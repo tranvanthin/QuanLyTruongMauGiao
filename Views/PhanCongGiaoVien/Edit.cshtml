@@ -1,0 +1,82 @@
+﻿@model QuanLyTruongMauGiao.Models.NoDatabase.PCGiaoVien
+@using QuanLyTruongMauGiao.Models;
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.GV = Model;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Sửa phân công giáo viên</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Lớp</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaLop", new SelectList(ViewBag.MaLop, "MaLop", "TenLop", Model.MaLop), htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                    @Html.HiddenFor(m => m.MaLop)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label " style="flex: 0 0 20%; max-width: 20%;">Năm Học</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.EditorFor(model => model.NamHoc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } } )
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Giáo Viên 1</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaGV1", new SelectList(ViewBag.MaGV, "MaGV", "TenGV", Model.MaGV[0]), htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Giáo Viên 2</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaGV2", new SelectList(ViewBag.MaGV, "MaGV", "TenGV", Model.MaGV[1]), htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <div class="text-danger">
+                                        @ViewBag.Error
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Sửa</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+

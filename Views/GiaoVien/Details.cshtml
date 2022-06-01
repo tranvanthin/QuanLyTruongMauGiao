@@ -1,0 +1,123 @@
+﻿@model QuanLyTruongMauGiao.Models.GIAOVIEN
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form-control col-5">
+    <h4>Thông tin giáo viên @Model.TenGV</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tài khoản
+        </dt>
+        <dd>
+            @Model.TAIKHOAN.TenTK
+        </dd>
+
+        <dt>
+            Họ tên
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenGV)
+        </dd>
+
+        <dt>
+            Ngày sinh
+        </dt>
+
+        <dd>
+            @Model.NgaySinh.ToString("dd-MM-yyyy")
+        </dd>
+
+        <dt>
+            Giới tính
+        </dt>
+
+        @if (Model.GioiTinh)
+        {
+            <dd>Nam</dd>
+        }
+        else
+        {
+            <dd>Nữ</dd>
+        }
+
+        <dt>
+            Quê quán
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueQuan)
+        </dd>
+
+        <dt>
+           Điện thoại
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DienThoai)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            Loại hợp đồng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaiHopDong)
+        </dd>
+        <dt>
+           Kinh nghiệm
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KinhNghiem)
+        </dd>
+
+        <dt>
+            Trình độ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrinhDo)
+        </dd>
+
+        <dt>
+            Chuyên ngành
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChuyenNganh)
+        </dd>
+
+        <dt>
+           Loại tốt nghiệp
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaiTotNghiep)
+        </dd>
+        <dt>
+            Ảnh
+        </dt>
+
+        <dd>
+            <img width="135" height="135"  src="~/Image/GiaoVien/@Model.Anh" class="anh" />
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.MaGV }) |
+    @Html.ActionLink("Quay lại", "Index")
+</p>

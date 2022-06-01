@@ -1,0 +1,143 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.PHUHUYNH>
+@using PagedList.Mvc;
+<style>
+    .anh {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pagination > li > a {
+        float: left;
+        padding: 6px 12px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        border: 1px solid #ddd;
+    }
+
+    .pagination > .active a {
+        background-color: #337ab7;
+        color: #fff;
+    }
+
+    .pagination li:hover {
+        background-color: #687fff;
+    }
+
+    .pagination li a:hover {
+        color: #fff;
+    }
+    .blue1_color {
+        color: #2196f3 !important;
+    }
+
+    .icon_link {
+        font-size: 20px;
+    }
+
+    .green_color {
+        color: #009688 !important;
+    }
+
+    .red_color {
+        color: #e91e63 !important;
+    }
+
+    .yellow_color {
+        color: #ff9800 !important;
+    }
+</style>
+<div class="ibox" id="PhuHuynhList">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <button type="button" class="btn btn-outline-success" data-toggle="modal"><a href="/PhuHuynh/Create" style="color: blue"> <i class="fa fa-plus-circle yellow_color"></i> Thêm mới</a></button>
+        </div>
+    </div>
+    <div class="ibox-body">
+        <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ Tên</th>
+                    <th>Ngày Sinh</th>
+                    <th>Giới Tính</th>
+                    <th>Địa Chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Tài Khoản</th>
+                </tr>
+            </thead>
+            @{
+                int stt = 0;
+            }
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    stt++;
+                    <tr>
+                        <td>
+                            @stt
+                        </td>
+                        <td>
+                            @item.TenPH
+                        </td>
+                        <td>
+                            @item.NamSinh.ToString("dd-MM-yyyy")
+                        </td>
+                        @{
+                            string gioiTinh;
+                            if (item.GioiTinh)
+                            {
+                                gioiTinh = "Nam";
+                            }
+                            else
+                            {
+                                gioiTinh = "Nữ";
+                            }
+                        }
+                        <td>
+                            @gioiTinh
+                        </td>
+                        <td>
+                            @item.DiaChi
+                        </td>
+                        <td>
+                            @item.DienThoai
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.TenTK
+                        </td>
+                        <td>
+                            <a href="/PhuHuynh/Edit/@item.MaPH"> <i class="fa fa-wrench blue1_color icon_link"></i></a> |
+                            <a href="/PhuHuynh/Details/@item.MaPH"> <i class="fa fa-info-circle green_color icon_link"></i> </a> |
+                            <a href="/PhuHuynh/Delete/@item.MaPH"> <i class="fa fa-trash-o red_color icon_link"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                Trang @(Model.PageCount < Model.PageNumber ?0:Model.PageNumber)/@Model.PageCount
+            </div>
+            <div class="page">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                 new PagedListRenderOptions
+                      {
+                    LinkToFirstPageFormat = "<<",
+                    LinkToPreviousPageFormat = "<",
+                    LinkToNextPageFormat = ">",
+                    LinkToLastPageFormat = ">>",
+                    MaximumPageNumbersToDisplay = 10,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = false
+                 })
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

@@ -1,0 +1,120 @@
+﻿@model QuanLyTruongMauGiao.Models.PHUHUYNH
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaPH)
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="ibox">
+                <div class="ibox-head">
+                    <div class="ibox-title">Sửa phụ huynh</div>
+                    <div class="ibox-tools">
+                        <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-body">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Họ Tên</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.TenPH, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.TenPH, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-10">
+                                <input type="date" id="NamSinh" name="NamSinh" value="@Model.NamSinh.ToString("yyyy-MM-dd")" />
+                                @*@Html.EditorFor(model => model.NamSinh, new { htmlAttributes = new { @class = "form-control", @Value = Model.NamSinh.ToString("dd-MM-yyyy") } })*@
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Giới tính</label>
+                            <div class="col-sm-10" style="padding-top: 5px">
+                                @{
+                                    if (Model.GioiTinh)
+                                    {
+                                        <label>@Html.RadioButtonFor(model => model.GioiTinh, true, new { @checked = "checked" }) Nam</label>
+                                        <label>@Html.RadioButtonFor(model => model.GioiTinh, false) Nữ</label>
+                                    }
+                                    else
+                                    {
+                                        <label>@Html.RadioButtonFor(model => model.GioiTinh, true) Nam</label>
+                                        <label>@Html.RadioButtonFor(model => model.GioiTinh, false, new { @checked = "checked" }) Nữ</label>
+                                    }
+                                }
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Điện thoại</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.DienThoai, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.DienThoai, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tài khoản</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownList("TenTK1", new SelectList(ViewBag.TenTK, "TenTK", "TenTK", Model.TenTK), htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-10 ml-sm-auto">
+                                @Html.ValidationMessageFor(model => model.TenTK, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 text-danger">
+                                @ViewBag.msg
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 ml-sm-auto">
+                                <button class="btn btn-info" type="submit">Lưu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+

@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/LayoutPH.cshtml";
+}
+
+<h2><center>Chào mừng quý phụ huynh</center></h2>
+<br />
+
+<form action="" method="post">
+    <center>
+        <p><input type="button" value="Đăng kí bữa ăn" onclick="location.href = '@Url.Action("DangKiBuaAn","ChucNangPhuHuynh")'" /></p>
+        <p><input type="button" value="Xem đánh giá" onclick="location.href = '@Url.Action("XemDanhGia","ChucNangPhuHuynh")'" /></p>
+        <p><input type="button" value="Đóng học phí" onclick="location.href = '@Url.Action("DongHocPhi","ChucNangPhuHuynh")'" /></p>
+    </center>
+
+</form>
+

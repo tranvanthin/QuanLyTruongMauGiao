@@ -1,0 +1,53 @@
+﻿@model QuanLyTruongMauGiao.Models.LOP
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h3>Bạn có chắc chắn muốn xóa lớp này không?</h3>
+<div>
+    <h4>LOP</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+Tên lớp        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenLop)
+        </dd>
+
+        <dt>
+Sĩ số        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiSo)
+        </dd>
+
+        <dt>
+Độ tuổi        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DoTuoi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Khoi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Khoi)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xác nhận" class="btn btn-default" /> |
+            @Html.ActionLink("Quay lại", "Index")
+        </div>
+    }
+</div>

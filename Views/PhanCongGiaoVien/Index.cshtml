@@ -1,0 +1,141 @@
+﻿@model IEnumerable<QuanLyTruongMauGiao.Models.NoDatabase.PCGiaoVien>
+@using QuanLyTruongMauGiao.Models;
+@using PagedList.Mvc;
+<style>
+    .anh {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pagination > li > a {
+        float: left;
+        padding: 6px 12px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        border: 1px solid #ddd;
+    }
+
+    .pagination > .active a {
+        background-color: #337ab7;
+        color: #fff;
+    }
+
+    .pagination li:hover {
+        background-color: #687fff;
+    }
+
+    .pagination li a:hover {
+        color: #fff;
+    }
+    .blue1_color {
+        color: #2196f3 !important;
+    }
+
+    .icon_link {
+        font-size: 20px;
+    }
+
+    .green_color {
+        color: #009688 !important;
+    }
+
+    .red_color {
+        color: #e91e63 !important;
+    }
+
+    .yellow_color {
+        color: #ff9800 !important;
+    }
+</style>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<PHANCONGGIAOVIEN> list = ViewBag.pHANCONGGIAOVIENs as List<PHANCONGGIAOVIEN>;
+}
+<h2>Phân Công Giáo Viên</h2>
+<div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <button type="button" class="btn btn-outline-success" data-toggle="modal"><a href="/PhanCongGiaoVien/Create" style="color: blue"> <i class="fa fa-plus-circle yellow_color"></i> Thêm mới</a></button>
+        </div>
+    </div>
+    <div class="ibox-body">
+        <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+            <tr>
+                @using (Html.BeginForm())
+                {
+                    <p>
+                        <input type="text" name="searchstr" placeholder="Tên lớp" />
+                        <input type="submit" value="Tìm kiếm" />
+                    </p>
+                }
+            </tr>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Lớp</th>
+                    <th>Năm Học</th>
+                    <th>Giáo Viên</th> 
+                    <th></th>
+                </tr>
+            </thead>
+            @{
+                int stt = 0;
+            }
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    stt++;
+                    <tr>
+                        <td>
+                            @stt
+                        </td>
+                        <td>
+                            @{
+                                string tenLop = "";
+                                foreach (var lop in list)
+                                {
+                                    if (lop.MaLop.Equals(item.MaLop))
+                                    {
+                                        tenLop = lop.LOP.TenLop;
+                                    }
+                                }
+                            }
+                            @tenLop.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NamHoc)
+                        </td>
+                        <td>
+                            @{
+                                List<string> tenGV = new List<string>();
+                                foreach (var gv in item.MaGV)
+                                {
+                                    foreach (var giaovien in list)
+                                    {
+                                        if (gv.Equals(giaovien.GIAOVIEN.MaGV))
+                                        {
+                                            tenGV.Add(giaovien.GIAOVIEN.TenGV);
+                                            break;
+                                        }
+                                    }
+                                }
+                                string str = String.Join(",", tenGV);
+                            }
+                            @str
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Sửa", "Edit", new { id1 = item.MaLop, id2 = item.NamHoc }) |
+                            @Html.ActionLink("Xóa", "Delete", new { id1 = item.MaLop, id2 = item.NamHoc })*@
+
+                            <a href="/PhanCongGiaoVien/Edit?id1=@item.MaLop&id2=@item.NamHoc"> <i class="fa fa-wrench blue1_color icon_link"></i></a> |
+                            <a href="/PhanCongGiaoVien/Delete?id1=@item.MaLop&id2=@item.NamHoc"> <i class="fa fa-trash-o red_color icon_link"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+    </div>
+
+</div>

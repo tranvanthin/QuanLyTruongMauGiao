@@ -1,0 +1,66 @@
+﻿@model IEnumerable<QuanLyTruongMauGiao.Models.THONGBAO_TK>
+<li class="dropdown dropdown-notification">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o">
+            <span class="badge badge-primary envelope-badge" style="color: white; background-color: #dc3545;">@ViewBag.SoTB</span>
+        </i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+        <li class="dropdown-menu-header">
+            <div>
+                <span>@Model.Count() thông báo <strong>mới</strong></span>
+                <a class="pull-right" href="/Profile/ViewAllThongBao">Xem tất cả</a>
+            </div>
+        </li>
+        <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+            <div>
+                @foreach (var item in Model.ToList())
+                {
+                    <a class="list-group-item" href="/Profile/Details/@item.MaTB">
+                        <div class="media">
+                            @*<div class="media-img">
+                                <span class="badge badge-success badge-big"><i class="fa fa-check"></i></span>timespan.tostring("%d") + " " +timespan.tostring(@"hh\:mm:\ss");
+                            </div>*@
+                            <div class="media-body">
+                                @if (item.DaXem == true)
+                                {
+                                    <div class="font-13" style="color: black">@item.THONGBAO.TenTB</div>
+                                }
+                                else
+                                {
+                                    <div class="font-13" style="color: black; font-weight: bold;">@item.THONGBAO.TenTB</div>
+                                }
+                                <small class="text-muted">
+                                    @{TimeSpan time = DateTime.Now - item.THONGBAO.NgayTB; }
+                                    @if (time.Days == 0)
+                                    {
+                                        if (time.Hours == 0)
+                                        {
+                                            if (time.Minutes == 0)
+                                            {
+                                                @String.Format("{0:%s}sec", time);
+                                            }
+                                            else
+                                            {
+                                                @String.Format("{0:%m}min {0:%s}sec", time);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @String.Format("{0:%h}hours {0:%m}min {0:%s}sec", time);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:%d}days {0:%h}hours {0:%m}min {0:%s}sec", time);
+                                    }
+
+                                </small>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </li>
+    </ul>
+</li>

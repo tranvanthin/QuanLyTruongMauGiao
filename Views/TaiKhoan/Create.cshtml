@@ -1,0 +1,133 @@
+﻿@model QuanLyTruongMauGiao.Models.TAIKHOAN
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var temp = "/Image/image_default.png";
+    int quanLy = ViewBag.QuanLy;
+    string tkQL = "Admin" + quanLy;
+}
+<style>
+    h1 {
+        color: #bc0000;
+    }
+
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+@using (Html.BeginForm("Create", "TaiKhoan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Tạo tài khoản</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Tài khoản</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <input type="text" id="TenTK" name="TenTK" value="@tkQL" readonly />
+                                    <input type="text" id="QuanLy" value="@quanLy" hidden />
+                                    <input type="text" id="GiaoVien" value="@ViewBag.GiaoVien" hidden />
+                                    <input type="text" id="PhuHuynh" value="@ViewBag.PhuHuynh" hidden />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.TenTK, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Mật khẩu</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control", Type = "password" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Phân quyền</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <select class="form-control dropdown" id="PhanQuyen" name="PhanQuyen">
+                                        <option value="Quản lý">Quản lí</option>
+                                        <option value="Giáo viên">Giáo viên</option>
+                                        <option value="Phụ huynh">Phụ huynh</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.PhanQuyen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <input id="TrangThaiHD" name="TrangThaiHD" type="hidden" value="false" />
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Ảnh đại diện</label>
+                                <div class="col-md-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    <input class="form-control" id="AnhDaiDien" name="AnhDaiDien" type="text" value="image_default.png" hidden="hidden" />
+                                    <input type="file" id="InputImage" name="InputImage" onchange="loadFile(event)" />
+                                    <br />
+                                    <br />
+                                    <img id="output" alt="anh" width="135" height="135" src="@temp" />
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 text-danger" style="flex: 0 0 80%; max-width: 80%;">
+                                    @ViewBag.msg
+                                </div>
+                            </div>
+                            <div class="form-group row" style="padding-left: 50px; flex: 0 0 80%; max-width: 80%;">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Thêm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var ql = $("#QuanLy").val(); 
+        var gv = $("#GiaoVien").val();
+        var ph = $("#PhuHuynh").val();
+        $("#PhanQuyen").change(function () {
+            var quyen = $('#PhanQuyen option:selected').val();
+            if (quyen == "Quản lý") {
+                $("#TenTK").val("Admin" + ql);
+            }
+            else if (quyen == "Giáo viên") {
+                $("#TenTK").val(gv);
+            }
+            else {
+                $("#TenTK").val(ph);
+            }
+        });
+    });
+</script>

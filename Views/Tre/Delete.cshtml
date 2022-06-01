@@ -1,0 +1,176 @@
+﻿@model QuanLyTruongMauGiao.Models.TRE
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .warning {
+        font-size: 30px;
+        color: red;
+    }
+    .ibox {
+        background-color: #f1f1f1;
+    }
+
+    .anh {
+        width: 100px;
+        height: 100px;
+    }
+</style>
+
+<h3 class="warning">Bạn có muốn xóa trẻ này không?</h3>
+<div class="form-control col-10">
+        <h4>Thông tin chi tiết trẻ</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên trẻ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenTre)
+        </dd>
+
+        <dt>
+            Ngày sinh
+        </dt>
+
+        <dd>
+            @Model.NgaySinh.ToString("dd/MM/yyyy")
+        </dd>
+
+        <dt>
+            Giới tính
+        </dt>
+
+        @{
+            if (Model.GioiTinh)
+            {
+                <dd>Nam</dd>
+            }
+            else
+            {
+                <dd>Nữ</dd>
+            }
+        }
+
+
+        <dt>
+            Quê quán
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueQuan)
+        </dd>
+
+        <dt>
+            Dân tộc
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DanToc)
+        </dd>
+
+        <dt>
+            Ngày nhập học
+        </dt>
+
+        <dd>
+            @Model.NgayNhapHoc.ToString("dd/MM/yyyy")
+        </dd>
+        <dt>
+            Tên lớp
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LOP.TenLop)
+        </dd>
+
+        <dt>
+            Phụ huynh
+        </dt>
+        <dd>@Model.PHUHUYNH.TenPH </dd>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Chi tiết phụ huynh </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Họ tên</b></label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.PHUHUYNH.TenPH)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Ngày sinh</b></label>
+                                <div class="col-sm-10">
+                                    @Model.PHUHUYNH.NamSinh.ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Giới tính</b></label>
+                                @if (Model.PHUHUYNH.GioiTinh)
+                                {
+                                    <div class="col-sm-10">
+                                        Nam
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-10">
+                                        Nữ
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Địa chỉ</b></label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.PHUHUYNH.DiaChi)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Điện thoại</b></label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.PHUHUYNH.DienThoai)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label" style="padding-top: 0"><b>Tài khoản</b></label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.PHUHUYNH.TenTK)
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <dt>
+            Ảnh
+        </dt>
+        <dd>
+            <img src="~/Image/Tre/@Model.Anh" class="anh" />
+        </dd>
+        <dd class="text-danger">
+            @ViewBag.msg
+        </dd>
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Xác nhận xóa" class="btn btn-default" /> |
+        @Html.ActionLink("Quay lại", "Index")
+    </div>
+}

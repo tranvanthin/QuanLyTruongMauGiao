@@ -1,0 +1,105 @@
+﻿@model QuanLyTruongMauGiao.Models.LOP
+@using QuanLyTruongMauGiao.Models;
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    QLMauGiao db = new QLMauGiao();
+    var lisths = from item in db.TREs
+                 where item.MaLop == Model.MaLop
+                 select item;
+
+}
+<style>
+    .icon_link {
+        font-size: 20px;
+    }
+    .green_color {
+        color: #009688 !important;
+    }
+</style>
+<h2>Thông tin lớp @Model.TenLop</h2>
+
+<div>
+    <h3>
+        Sĩ số: @Html.DisplayFor(model => model.SiSo)
+    </h3>
+    <h3>
+        Độ tuổi: @Html.DisplayFor(model => model.DoTuoi)
+
+    </h3>
+    <h3>
+        Khối: @Html.DisplayFor(model => model.Khoi)
+
+    </h3>
+    <a href="/Lop/AddTre/@Model.MaLop">Thêm trẻ vào lớp</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox">
+                <div class="ibox-head">
+                    <div class="ibox-title">Danh sách trẻ trong lớp</div>
+                    <div class="ibox-tools">
+                        <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-body">
+                    <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên trẻ</th>
+                                <th>Ngày sinh</th>
+                                <th>Giới tính</th>
+                                <th>Tên phụ huynh</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @{
+                            int stt = 0;
+                        }
+                        <tbody>
+                            @foreach (var item in lisths)
+                            {
+                                stt++;
+                            <tr>
+                                <td>
+                                    @stt
+                                </td>
+                                <td>
+                                    @item.TenTre
+                                </td>
+                                <td>
+                                    @item.NgaySinh.ToString("dd/MM/yyyy")
+                                </td>
+                                @{
+                                    if (item.GioiTinh)
+                                    {
+                                        <td>Nam</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Nữ</td>
+                                    }
+                                }
+                                <td>
+                                    @item.PHUHUYNH.TenPH
+                                </td>
+                                <td>
+                                    <a href="/Tre/Details/@item.MaTre"> <i class="fa fa-info-circle green_color icon_link"></i></a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.MaLop }) |
+    @Html.ActionLink("Quay lại", "Index")
+</p>

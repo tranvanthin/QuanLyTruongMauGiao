@@ -1,0 +1,97 @@
+﻿@model QuanLyTruongMauGiao.Models.PHUHUYNH
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Bạn có chắc muốn xóa phụ huynh?</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <div class="ibox-title, text-danger" style="padding-top: 0">@ViewBag.Error</div>
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Mã</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.MaPH)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Họ Tên</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.TenPH)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Ngày Sinh</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.NamSinh)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Giới Tính</label>
+                                <div class="col-sm-10">
+                                    @{
+                                        string gioiTinh;
+                                        if (Model.GioiTinh)
+                                        {
+                                            gioiTinh = "Nam";
+                                        }
+                                        else
+                                        {
+                                            gioiTinh = "Nữ";
+                                        }
+                                    }
+                                    @gioiTinh
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Địa Chỉ</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.DiaChi)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Điện Thoại</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.DienThoai)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Email</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.Email)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Tài Khoản</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.TenTK)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Xóa</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+

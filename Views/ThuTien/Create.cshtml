@@ -1,0 +1,246 @@
+﻿@model IEnumerable<QuanLyTruongMauGiao.Models.CHIPHI> 
+@using QuanLyTruongMauGiao.Models;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    QLMauGiao db = new QLMauGiao();
+}
+<style>
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+<div class="form-horizontal">
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="ibox">
+                <div class="ibox-head">
+                    <div class="ibox-title">Tạo phiếu thu</div>
+                    <div class="ibox-tools">
+                        <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-body">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Mã phiếu</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="MaPhieu" name="MaPhieu" value="@ViewBag.MaPhieu" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Ngày lập</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="NgayLapPhieu" name="NgayLapPhieu" value="@ViewBag.NgayLap" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Trẻ</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownList("MaTre", new SelectList(ViewBag.Tre, "MaTre", "TenTre"))
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Chi phí</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nội dung</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownList("ChiPhi", new SelectList(ViewBag.ChiPhi, "MaChiPhi", "NoiDung"), "")
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Đơn giá</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="donGia" name="donGia" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Số lượng</label>
+                            <div class="col-sm-10">
+                                <input type="number" id="soLuong" name="soLuong" min="0" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 ml-sm-auto">
+                                <button class="btn btn-info" id="addToList">Thêm chi phí</button>
+                            </div>
+                        </div>
+                        <table id="detailsTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Nội dung</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="form-group row">
+                            <div class="col-sm-10 text-danger">
+                                @ViewBag.error
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 ml-sm-auto">
+                                <button class="btn btn-info" id="create" type="submit">Thêm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+                                var ListChiPhi = [];
+                                @foreach (var item in Model.ToList())
+                                {
+                                    @:ListChiPhi.push({ Ma: "@item.MaChiPhi", DG: "@item.DonGia" });
+                                }
+                                function getDonGia(ma)
+                                {
+                                    for (var i = 0; i < ListChiPhi.length; i++) {
+                                        if (ListChiPhi[i].Ma == ma) {
+                                            return ListChiPhi[i].DG;
+                                        }
+                                    }
+                                    return null;
+                                }
+                                var ListDKBA = []; //list lưu dữ liệu đăng kí bữa ăn trong tháng trước đó
+                                @{ 
+                                    var list = from item in db.DiemDanhVaDangKyBuaAns
+                                               where item.Ngay.Month == DateTime.Now.Month - 1 && item.Ngay.Year == DateTime.Now.Year
+                                               group item by item.MaTre into g
+                                               select new
+                                               {
+                                                   MaTre = g.Key,
+                                                   NumBA = g.Count()
+                                               };
+
+                                }
+                                @foreach (var item in list.ToList())
+                                {
+                                    @:ListDKBA.push({ MaTre: "@item.MaTre", NumBA: "@item.NumBA" });
+                                }
+                                function getNum(maTre) {
+                                    for (var i = 0; i < ListDKBA.length; i++) {
+                                        if (ListDKBA[i].MaTre == maTre) {
+                                            return ListDKBA[i].NumBA;
+                                        }
+                                    }
+                                    return 0;
+                               }
+                      //Tự động điền đơn giá khi chọn chi phí
+                      $("#ChiPhi").change(function () {
+                                var ma = $('#ChiPhi option:selected').val();
+                                $("#donGia").val(getDonGia(ma));
+                                var maTre = $('#MaTre option:selected').val();
+                              if (ma == "CP002") {
+                                  $("#soLuong").val(getNum(maTre));
+                                  $("#soLuong").prop('readonly', true);
+                              }
+                              else if (ma == "CP001") {
+                                  $("#soLuong").val(1);
+                                  $("#soLuong").prop('readonly', true);
+                              }
+                              else{
+                                  $("#soLuong").val(0);
+                                  $("#soLuong").prop('readonly', false);
+                              }
+
+                            });
+
+                      //Thêm chi phí vào list
+                      $("#addToList").click(function (e) {
+                                e.preventDefault();
+
+                                if ($.trim($('#ChiPhi option:selected').val()) == "" || $.trim($("#donGia").val()) == "" || $.trim($("#soLuong").val()) == "") return;
+
+                                var maCP = $('#ChiPhi option:selected').val(),
+                                    chiPhi = $('#ChiPhi option:selected').text(),
+                                    donGia = $("#donGia").val(),
+                                    soLuong = $("#soLuong").val(),
+                                    detailsTableBody = $("#detailsTable tbody");
+
+                                var item = '<tr><td>' + maCP + '</td><td>' + chiPhi + '</td><td>' + donGia + '</td><td>' + soLuong + '</td><td>' + (parseFloat(donGia) * parseInt(soLuong)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Xóa</a></td></tr>';
+                                detailsTableBody.append(item);
+                                clearItem();
+                            });
+                      //Xóa dữ liệu khi add to list
+                      function clearItem() {
+                                $("#ChiPhi").val(0);
+                                $("#donGia").val('');
+                                $("#soLuong").val('');
+                            }
+                      //Xóa 1 dòng khỏi list
+                      $(document).on('click', 'a.deleteItem', function (e) {
+                                e.preventDefault();
+                                var $self = $(this);
+                                if ($(this).attr('data-itemId') == "0") {
+                                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                                        $(this).remove();
+                                    });
+                                }
+                            });
+
+                       function create(data) {
+                                return $.ajax({
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: 'json',
+                                    type: 'POST',
+                                    url: "/ThuTien/Create",
+                                    data: data,
+                                    success: function (result) {
+                                        alert(result);
+                                        /*window.location.href = "/ThuTien/Index";*/
+                                        location.reload();
+                                    },
+                                    error: function (data, errorThrown) {
+                                        alert('request failed :' + errorThrown);
+                                    }
+                                });
+                            }
+
+
+                        //Thêm
+                        $("#create").click(function (e) {
+                                    e.preventDefault();
+
+                                    var chiPhiArr = new Array();
+
+                                    $.each($("#detailsTable tbody tr"), function () {
+                                        var MaPhieu = $("#MaPhieu").val();
+                                        var MaChiPhi = $(this).find("td").eq(0).html();
+                                        var SoLuong = $(this).find("td").eq(3).html();
+
+                                        var chiPhiOne = {};
+                                        chiPhiOne.MaPhieu = MaPhieu;
+                                        chiPhiOne.MaChiPhi = MaChiPhi;
+                                        chiPhiOne.SoLuong = SoLuong;
+                                        chiPhiArr.push(chiPhiOne);
+                                    });
+                                    var data = JSON.stringify({
+                                        maPhieu: $("#MaPhieu").val(),
+                                        maTre: $("#MaTre").val(),
+                                        chiPhi: chiPhiArr
+                                    });
+                                    $.when(create(data)).then(function (response) {
+                                        console.log(response);
+                                    }).fail(function (err) {
+                                        console.log(err);
+                                    });
+                                });
+    });
+</script>

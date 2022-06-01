@@ -1,0 +1,68 @@
+﻿@model QuanLyTruongMauGiao.Models.LOP
+@using QuanLyTruongMauGiao.Models;
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    QLMauGiao db = new QLMauGiao();
+    var listtre = from item in db.TREs
+                  join a in db.PHUHUYNHs on item.MaPH equals a.MaPH
+                  select new
+                  {
+                      MaTre = item.MaTre,
+                      Ten = item.TenTre,
+                      NgaySinh = item.NgaySinh,
+                      PH = a.TenPH,
+                      sdt = a.DienThoai
+                  };
+
+}
+<style>
+   datalist{
+       background-color: aqua;
+   }
+</style>
+<h2>Thêm trẻ vào lớp @Model.TenLop</h2>
+<div>
+    <h3>
+        Sĩ số: @Html.DisplayFor(model => model.SiSo)
+    </h3>
+    <h3>
+        Độ tuổi: @Html.DisplayFor(model => model.DoTuoi)
+
+    </h3>
+    <h3>
+        Khối: @Html.DisplayFor(model => model.Khoi)
+
+    </h3>
+
+</div>
+    @using (Ajax.BeginForm("AddTrePV", "Lop", new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace
+
+    }))
+    {
+        <input type="text" name="id" id="id" placeholder="Nhập trẻ" list="ide"/>
+        <input type="submit" value="Thêm" />
+        <input type="text" name="MaLop" id="MaLop" value="@Model.MaLop" hidden="hidden"/>
+        <p> </p>
+        <hr />
+    }
+    <datalist id="ide" name="id">
+        @foreach (var item in listtre)
+        {
+        <option value="@item.MaTre">
+           @item.Ten
+           @item.NgaySinh.ToString("dd/MM/yyyy")
+            Phụ huynh: @item.PH
+            @item.sdt
+        </option>
+        }
+
+    </datalist>
+
+    @Html.Partial("AddTrePV")
+
+
+

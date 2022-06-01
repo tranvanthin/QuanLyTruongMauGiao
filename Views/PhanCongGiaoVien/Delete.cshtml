@@ -1,0 +1,86 @@
+﻿@model QuanLyTruongMauGiao.Models.NoDatabase.PCGiaoVien
+@using QuanLyTruongMauGiao.Models;
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<PHANCONGGIAOVIEN> list = ViewBag.pHANCONGGIAOVIENs as List<PHANCONGGIAOVIEN>;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Bạn có chắc muốn xóa ?</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Lớp</label>
+                                <div class="col-sm-10">
+                                    @{
+                                        string tenLop = "";
+                                        foreach (var lop in list)
+                                        {
+                                            if (lop.MaLop.Equals(Model.MaLop))
+                                            {
+                                                tenLop = lop.LOP.TenLop;
+                                            }
+                                        }
+                                    }
+                                    @tenLop.ToString()
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Năm Học</label>
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.NamHoc)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="padding-top: 0">Giáo Viên</label>
+                                <div class="col-sm-10">                               
+                                    @{
+                                        List<string> tenGV = new List<string>();
+                                        foreach (var gv in Model.MaGV)
+                                        {
+                                            foreach (var giaovien in list)
+                                            {
+                                                if (gv.Equals(giaovien.GIAOVIEN.MaGV))
+                                                {
+                                                    tenGV.Add(giaovien.GIAOVIEN.TenGV);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        string str = String.Join(",", tenGV);
+                                    }
+                                    @str
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Xóa</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

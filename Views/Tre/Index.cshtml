@@ -1,0 +1,28 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.TRE>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Quản lí trẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<h1>Danh sách trẻ</h1>
+
+@using (Ajax.BeginForm("GetName", "tre", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "TreList",
+
+}))
+{
+    <input type="text" name="Name" id="name" placeholder="Tên" />
+    <input type="submit" value="Tìm kiếm" />
+    <p> </p>
+    <hr />
+}
+
+
+@Html.Partial("IndexPartialView")

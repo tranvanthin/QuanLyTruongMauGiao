@@ -1,0 +1,71 @@
+﻿@using QuanLyTruongMauGiao.Models
+
+@{
+    ViewBag.Title = "ProfilePH";
+    Layout = "~/Views/Shared/LayoutPH.cshtml";
+    var account = Session["user"] as TAIKHOAN;
+    QLMauGiao db = new QLMauGiao();
+    var user = (from item in db.PHUHUYNHs where item.TenTK == account.TenTK select item).FirstOrDefault();
+}
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+<h2>Thông tin phụ huynh @user.TenPH</h2>
+
+@using (Html.BeginForm("EditPH", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input id="MaPH" name="MaPH" class="form-control" type="text" value="@user.MaPH" hidden="hidden" />
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Họ tên</label>
+            <div class="col-md-10">
+                <input id="TenPH" name="TenPH" class="form-control" type="text" value="@user.TenPH" disabled="disabled" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Tài khoản</label>
+            <div class="col-md-10">
+                <input id="TenTK" name="TenTK" class="form-control" type="text" value="@user.TenTK" disabled="disabled" />
+                <a href="/Home/ChangePassword">Đổi mật khẩu</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Số điện thoại</label>
+            <div class="col-md-10">
+                <input id="DienThoai" name="DienThoai" class="form-control" type="tel" pattern="[0-9]{7,}" value="@user.DienThoai" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input id="Email" name="Email" class="form-control" type="email" value="@user.Email" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Ảnh đại diện</label>
+            <div class="col-md-10">
+                <input type="file" id="inputimg" name="inputimg" onchange="loadFile(event)" />
+                <br />
+                <img id="output" alt="anh" width="200" height="200" src="~/Image/Profile/@account.AnhDaiDien" />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <label><a href="/home/homepage">Quay lại</a></label>
+</div>
+

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<QuanLyTruongMauGiao.Models.TRE>
+@using PagedList.Mvc;
+@using QuanLyTruongMauGiao.Models
+
+@{
+    ViewBag.Title = "DiemDanh";
+    Layout = "~/Views/Shared/LayoutGV.cshtml";
+    List<String> listMaTre = ViewBag.ListMaTre as List<String>;
+    List<DiemDanhVaDangKyBuaAn> listTre = ViewBag.ListTre as List<DiemDanhVaDangKyBuaAn>;
+}
+<h2>Điểm danh lớp @ViewBag.Lop ngày @DateTime.Now.ToString("dd-MM-yyyy") </h2>
+<br />
+@using (Html.BeginForm("diemdanh", "chucnanggiaovien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-control col-10" style="width:80%" id="registerContainer">
+        <div class="dl-horizontal">
+            <table class="table" id="tblRegister">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Mã trẻ
+                        </th>
+                        <th>
+                            Ngày
+                        </th>
+                        <th>
+                            Tên trẻ
+                        </th>
+                        <th>
+                            Tên phụ huynh
+                        </th>
+                        <th>
+                            Điểm danh  <input type="checkbox" id="selectAll" />
+                        </th>
+                    </tr>
+                </thead>
+                @{
+                    int stt = 0;
+                }
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        stt++;
+                        <tr>
+                            <td>
+                                @stt
+                            </td>
+                            <td>
+                                @item.MaTre
+                            </td>
+                            <td>
+                                @DateTime.Now.ToString("dd-MM-yyyy")
+                            </td>
+                            <td>
+                                @item.TenTre
+                            </td>
+                            <td>
+                                @item.PHUHUYNH.TenPH
+                            </td>
+                            @if (listMaTre != null && listMaTre.Contains(item.MaTre))
+                            {
+                                var tre = listTre.Where(x => x.MaTre == item.MaTre).FirstOrDefault();
+                                <td>
+                                    <input type="checkbox" checked="@tre.DiemDanh" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" value="" />
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-10 ml-sm-auto">
+            <button class="btn btn-info" type="button" id="Luu" style="margin:0 30px 0 150px">Lưu</button>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#selectAll').click(function (e) {
+                $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+            });
+            function create(data) {
+                return $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: "/ChucNangGiaoVien/DiemDanh",
+                    data: data,
+                    success: function (result) {
+                        alert(result);
+                        /*window.location.href = "/ThuTien/Index";*/
+                        location.reload();
+                    },
+                    error: function (data, errorThrown) {
+                        alert('request failed :' + errorThrown);
+                    }
+                });
+            }
+            $("#Luu").click(function (e) {
+                e.preventDefault();
+                var index = 0;
+                var listData = new Array();
+                $.each($("#tblRegister tbody tr"), function () {
+                    var MaTre = $(this).find("td").eq(1).html();
+                    var select = $(this).find('input[type=checkbox]').prop('checked');
+                    var dataOne = {};
+                    dataOne.MaTre = MaTre;
+                    dataOne.select = select;
+                    listData.push(dataOne);
+                });
+                var data = JSON.stringify({
+                    list: listData
+                });
+                $.when(create(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+        });
+    </script>
+}

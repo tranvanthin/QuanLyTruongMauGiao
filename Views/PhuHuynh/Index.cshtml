@@ -1,0 +1,29 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.PHUHUYNH>
+@using PagedList.Mvc;
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Danh Sách Phụ Huynh</h3>
+@using (Ajax.BeginForm("GetNamePH", "PhuHuynh", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "PhuHuynhList",
+
+}))
+{
+    <input type="text" name="searchstr" placeholder="Tên phụ huynh" />
+    <input type="submit" value="Tìm kiếm" />
+    <p> </p>
+    <hr />
+}
+
+
+@Html.Partial("PhuHuynhPartialView")
+
+
+
+
+

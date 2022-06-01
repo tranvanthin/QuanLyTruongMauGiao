@@ -1,0 +1,142 @@
+﻿@model IEnumerable<QuanLyTruongMauGiao.Models.THUCDONNGAY>
+@using QuanLyTruongMauGiao.Models
+
+@{
+    ViewBag.Title = "DangKiBuaAn";
+    Layout = "~/Views/Shared/LayoutPH.cshtml";
+    List<DateTime> listNgay = ViewBag.ListNgay as List<DateTime>;
+    List<DiemDanhVaDangKyBuaAn> listTre = ViewBag.ListTre as List<DiemDanhVaDangKyBuaAn>;
+}
+
+<h2>Đăng kí bữa ăn</h2>
+<br />
+
+@using (Html.BeginForm("dangkibuaan", "chucnangphuhuynh", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-control col-10" id="registerMealContainer">
+        <div class="dl-horizontal">
+            <table class="table" id="tblRegister">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Ngày
+                        </th>
+                        <th>
+                            Bữa sáng
+                        </th>
+                        <th>
+                            Bữa trưa
+                        </th>
+                        <th>
+                            Bữa xế
+                        </th>
+                        <th>
+                            Chọn <input type="checkbox" id="selectAll" />
+                        </th>
+                    </tr>
+                </thead>
+                @{
+                    int stt = 0;
+                }
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        stt++;
+                    <tr>
+                        <td>@stt</td>
+                        <td hidden>
+                            @item.MaTDN
+                        </td>
+                        <td hidden>
+                            @item.Ngay
+                        </td>
+                        <td>
+                            @item.Ngay.ToString("dd-MM-yyyy")
+                        </td>
+                        <td>
+                            @item.BuaSang
+                        </td>
+                        <td>
+                            @item.BuaTrua
+                        </td>
+                        <td>
+                            @item.BuaXe
+                        </td>
+                        @if (listNgay != null && listNgay.Contains(item.Ngay))
+                        {
+                            var tre = listTre.Where(x => x.Ngay == item.Ngay).FirstOrDefault();
+                            <td>
+                                <input type="checkbox" checked="@tre.DangKiBuaAn" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <input type="checkbox" value="" />
+                            </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-10 ml-sm-auto">
+            <button class="btn btn-info" type="button" id="DangKi" style="margin:0 30px 0 50px">Đăng ký</button>
+        </div>
+    </div>
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#selectAll').click(function (e) {
+            $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+        });
+        function create(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/ChucNangPhuHuynh/DangKiBuaAn",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    /*window.location.href = "/ThuTien/Index";*/
+                    location.reload();
+                },
+                error: function (data, errorThrown) {
+                    alert('request failed :' + errorThrown);
+                }
+            });
+        }
+        $("#DangKi").click(function (e) {
+            e.preventDefault();
+            var index = 0;
+            var listData = new Array();
+            $.each($("#tblRegister tbody tr"), function () {
+                /*var MaTDN = $.trim($(this).find("td").eq(1).html());*/
+                var Ngay = $.trim($(this).find("td").eq(2).html())
+                var select = $(this).find('input[type=checkbox]').prop('checked');
+                var dataOne = {};
+                dataOne.Ngay = Ngay;
+                dataOne.select = select;
+                listData.push(dataOne);
+            });
+            var data = JSON.stringify({
+                list: listData
+            });
+            $.when(create(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+    });
+</script>
+
+

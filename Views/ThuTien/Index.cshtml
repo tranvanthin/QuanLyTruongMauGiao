@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.PHIEUTHUTIEN>
+@using PagedList.Mvc;
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<style>
+    .anh {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pagination > li > a {
+        float: left;
+        padding: 6px 12px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        border: 1px solid #ddd;
+    }
+
+    .pagination > .active a {
+        background-color: #337ab7;
+        color: #fff;
+    }
+
+    .pagination li:hover {
+        background-color: #687fff;
+    }
+
+    .pagination li a:hover {
+        color: #fff;
+    }
+</style>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Danh Sách Phiếu Thu</h3>
+@using (Ajax.BeginForm("GetThucDonByTrangThai", "ThuTien", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "PhieuThuList",
+
+}))
+{
+    <select name="TrangThai">
+        <option value="all">All</option>
+        <option value="HoanThanh">Hoàn thành</option>
+        <option value="ChuaHoanThanh">Chưa hoàn thành</option>
+    </select>
+    <input type="submit" value="Lọc" />
+    <p> </p>
+    <hr />
+}
+
+
+@Html.Partial("PhieuThuPartialView")
+

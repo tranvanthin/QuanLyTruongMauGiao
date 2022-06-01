@@ -1,0 +1,131 @@
+﻿@model QuanLyTruongMauGiao.Models.GIAOVIEN
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .warning {
+        font-size: 30px;
+        color: red;
+    }
+</style>
+
+<h3 class="warning">Bạn có muốn xóa giáo viên này không?</h3>
+<div class="text-danger" style="padding-top: 0">@ViewBag.Error</div>
+<div>
+    <hr />
+    <dl class="form-control col-7">
+        <dt>Tên tài khoản</dt>
+        <dd>@Model.TenTK</dd>
+        <dt>
+            Họ tên
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenGV)
+        </dd>
+
+        <dt>
+            Ngày sinh
+        </dt>
+
+        <dd>
+            @Model.NgaySinh.ToString("dd-MM-yyyy")
+        </dd>
+
+        <dt>
+            Giới tính
+        </dt>
+
+        @if (Model.GioiTinh)
+        {
+            <dd>Nam</dd>
+        }
+        else
+        {
+            <dd>Nữ</dd>
+        }
+
+        <dt>
+            Quê quán
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueQuan)
+        </dd>
+
+        <dt>
+            Điện thoại
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DienThoai)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            Loại hợp đồng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaiHopDong)
+        </dd>
+
+        <dt>
+            Kinh nghiệm
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KinhNghiem)
+        </dd>
+
+        <dt>
+            Trình độ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrinhDo)
+        </dd>
+
+        <dt>
+            Chuyên ngành
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChuyenNganh)
+        </dd>
+
+        <dt>
+            Loại tốt nghiệp
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaiTotNghiep)
+        </dd>
+        <dt>
+            Ảnh
+        </dt>
+
+        <dd>
+            <img width="135" height="135" src="~/Image/GiaoVien/@Model.Anh" class="anh" />
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xác nhận xóa" class="btn btn-default" /> |
+            @Html.ActionLink("Quay lại", "Index")
+        </div>
+    }
+</div>

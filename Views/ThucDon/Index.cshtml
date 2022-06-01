@@ -1,0 +1,26 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.THUCDONNGAY>
+@using PagedList.Mvc;
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Danh Sách Thực đơn</h3>
+@using (Ajax.BeginForm("GetThucDonByDate", "ThucDon", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "ThucDonList",
+
+}))
+{
+    <input type="date" name="startdate" /><label>to</label> <input type = "date" name = "enddate" />
+    <input type = "submit" value = "Tìm kiếm" />
+    <p> </p>
+    <hr />
+}
+
+
+@Html.Partial("ThucDonPartialView")
+

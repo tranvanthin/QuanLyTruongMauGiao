@@ -1,0 +1,91 @@
+﻿@model QuanLyTruongMauGiao.Models.THONGBAO
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+@using (Html.BeginForm("Create", "ThongBao", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Tạo thông báo</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 25%; max-width: 25%;">Mã thông báo</label>
+                                <div class="col-sm-10" style="flex: 0 0 75%; max-width: 75%;">
+                                    <input type="text" id="MaTB" name="MaTB" value="@ViewBag.MaTB" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 25%; max-width: 25%;">Ngày tạo</label>
+                                <div class="col-sm-10" style="flex: 0 0 75%; max-width: 75%;">
+                                    <input type="text" id="NgayTB" name="NgayTB" value="@DateTime.Now.ToString("dd-MM-yyyy")" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 25%; max-width: 25%;">Tên thông báo</label>
+                                <div class="col-sm-10" style="flex: 0 0 75%; max-width: 75%;">
+                                    @Html.EditorFor(model => model.TenTB, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 75%; max-width: 75%;">
+                                    @Html.ValidationMessageFor(model => model.TenTB, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 25%; max-width: 25%;">Nội dung</label>
+                                <div class="col-sm-10" style="flex: 0 0 75%; max-width: 75%;">
+                                    <textarea cols="70" id="NoiDung" name="NoiDung" rows="4"></textarea>
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 75%; max-width: 75%;">
+                                    @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 25%; max-width: 25%;">Đối tượng</label>
+                                <div class="col-sm-10" style="flex: 0 0 75%; max-width: 75%;">
+                                    <select name="object">
+                                        <option value="all">All</option>
+                                        <option value="gv">Giáo viên</option>
+                                        <option value="ph">Phụ huynh</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 text-danger" style="flex: 0 0 75%; max-width: 75%;">
+                                    @ViewBag.msg
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto" style="flex: 0 0 75%; max-width: 75%;">
+                                    <button class="btn btn-info" type="submit">Thêm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

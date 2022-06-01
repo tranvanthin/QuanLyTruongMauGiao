@@ -1,0 +1,85 @@
+﻿@model PagedList.IPagedList<QuanLyTruongMauGiao.Models.THONGBAO_TK>
+@using PagedList.Mvc;
+@{
+    Layout = ViewBag.Layout;
+}
+
+<style>
+    .blue1_color {
+        color: #2196f3 !important;
+    }
+
+    .icon_link {
+        font-size: 20px;
+    }
+
+    .green_color {
+        color: #009688 !important;
+    }
+
+    .red_color {
+        color: #e91e63 !important;
+    }
+
+    .yellow_color {
+        color: #ff9800 !important;
+    }
+</style>
+
+<div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            Danh sách thông báo
+        </div>
+    </div>
+    <div class="ibox-body">
+        <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên thông báo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @{
+                int stt = 0;
+            }
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    stt++;
+                    <tr>
+                        <td>
+                            @stt
+                        </td>
+                        <td>
+                            @item.THONGBAO.TenTB
+                        </td>
+                        <td>
+                            <a href="/Profile/Details/@item.MaTB"> <i class="fa fa-info-circle green_color icon_link"></i> </a> |
+                            <a href="/Profile/Delete/@item.MaTB"> <i class="fa fa-trash-o red_color icon_link"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                Trang @(Model.PageCount < Model.PageNumber ?0:Model.PageNumber)/@Model.PageCount
+            </div>
+            <div class="page">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                 new PagedListRenderOptions
+                      {
+                    LinkToFirstPageFormat = "<<",
+                    LinkToPreviousPageFormat = "<",
+                    LinkToNextPageFormat = ">",
+                    LinkToLastPageFormat = ">>",
+                    MaximumPageNumbersToDisplay = 10,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = false
+                 })
+            </div>
+        </div>
+    </div>
+
+</div>

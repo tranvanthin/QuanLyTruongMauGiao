@@ -1,0 +1,87 @@
+﻿@model QuanLyTruongMauGiao.Models.PHANCONGGIAOVIEN
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+<style>
+    input:read-only {
+        background-color: #f1f1f1;
+    }
+</style>
+@using (Html.BeginForm("Create","PhanCongGiaoVien",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Phân công giáo viên</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Lớp</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaLop", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaLop, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Năm Học</label>
+                                <div class="col-sm-10"style="flex: 0 0 80%; max-width: 80%;">
+                                    <input type="text" id="NamHoc" name="NamHoc" value="@DateTime.Now.Year.ToString()" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Giáo Viên 1</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaGV1", new SelectList(ViewBag.MaGV, "MaGV", "TenGV"), htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="flex: 0 0 20%; max-width: 20%;">Giáo Viên 2</label>
+                                <div class="col-sm-10" style="flex: 0 0 80%; max-width: 80%;">
+                                    @Html.DropDownList("MaGV2", new SelectList(ViewBag.MaGV, "MaGV", "TenGV"), htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-10 ml-sm-auto">
+                                    @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">  
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <div class="text-danger">
+                                        @ViewBag.Error
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 ml-sm-auto">
+                                    <button class="btn btn-info" type="submit">Thêm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>
+
